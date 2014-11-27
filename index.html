@@ -140,6 +140,9 @@
             <img src="assets/images/usd.png" />
           </section>
           <section>
+            <img src="assets/images/booking.png" class="" />
+          </section>
+          <section>
             <h2>Currency formatting</a>
             <h3> Turning '1999.99 USD' into '$1,999.99'</h3>
             <ul>
@@ -183,11 +186,11 @@
 
         <section>
           <section>
-            <img src="assets/images/addressing.png" />
+            <h2>Build me an address form!</h2>
+            <img src="assets/images/address-form.png" />
           </section>
           <section>
-            <h2>I'll just build my own form!</h2>
-            <img src="assets/images/address-form.png" />
+            <img src="assets/images/addressing.png" />
           </section>
           <section>
             <h2>Data model: Address</h2>
@@ -251,7 +254,7 @@
             <img src="assets/images/zone.png" />
           </section>
           <section>
-            <h2>Territorial groupings (zones)</h2>
+            <h2>Territorial groupings</h2>
             <ul>
               <li>California and Nevada</li>
               <li>European Union</li>
@@ -267,7 +270,7 @@
              <li>ZoneMemberCountry*</li>
             </ul>
             <br /><br />
-            <p>Special: include/exclude postal codes!</p>
+            <p>Special: include/exclude postal codes</p>
           </section>
           <section>
             <h2> Matching an address </h2>
@@ -281,37 +284,98 @@
 
         <section>
           <section>
-            <img src="assets/images/tax.png" />
-          </section>
-          <section>
             <img src="assets/images/tax.jpg" />
-            <h3>What are my rates?</h3>
-            <h3>When do they apply?</h3>
           </section>
           <section>
-            <h2>2015 VOES</h2>
+            <h2>Problem #1: What are my rates?</h2>
+            <img src="assets/images/europe-map.png" />
+          </section>
+          <section>
+            <h2>Problem #1.1: 2015 VOES</h2>
             <ul>
             <li>VAT on Electronically Supplied Services</li>
             <li>When selling a digital product, VAT is due at the place of the customer.</li>
             <li>From 2015 this applies to EVERYONE.</li>
+            </ul>
           </section>
           <section>
-            <h2>What are my rates: Percentages change</h2>
+            <h2>Problem #2: Percentages change</h2>
             <img src="assets/images/angela-merkel.jpg" />
           </section>
           <section>
-            <h2> When do they apply: tax zones</h2>
-            <p>German VAT applies to Germany and 5 Austrian postal codes.</p>
-            <p>Austrian VAT applies to Austria without those 5 postal codes.</p>
+            <h2> Problem #3: Tax zones</h2>
+            <p>German VAT is used in Germany and 5 Austrian postal codes.</p>
+            <p>Austrian VAT is used in Austria without those 5 postal codes.</p>
           </section>
           <section>
-            <h2>When do they apply: place of supply</h2>
+            <h2>Problem #4: Charging the correct rate</h2>
             <ul>
-              <li>Explicit </li>
-              <li>Based on company address</li>
-              <li>Based on customer address</li>
+              <li>B2B or B2C?</li>
+              <li>Physical or digital product?</li>
+              <li>Registered for tax in additional countries?</li>
+              <li>Place of supply</li>
             </ul>
           </section>
+          <section>
+            <img src="assets/images/tax.png" />
+          </section>
+          <section>
+              <h2>Data model</h2>
+              <p>Zone 1-1 TaxType 1-n TaxRate 1-n TaxRateAmount</p><br />
+              <ul>
+                <li>Tax type: French VAT</li>
+                <li>Zone: "France (VAT)" (inc. "France ex. Corsica" and "Monaco")</li>
+                <li>Tax rates: Standard, Intermediate, Reduced, Super Reduced</li>
+                <li>Tax rate amounts for Standard: <br />19.6% (until Jan 1st 2014), 20% (from Jan 1st 2014)</li>
+              </ul>
+          </section>
+          <section>
+              <h2>Bundled data for EU and Switzerland</h2>
+              <img src="assets/images/tax-dataset.png" />
+          </section>
+          <section>
+          <h2>Resolvers</h2>
+          <img src="assets/images/resolver.png" />
+          <ol>
+            <li>Resolve the tax types.</li>
+            <li>Resolve the tax rate for each resolved tax type.</li>
+            <li>Get the tax rate amount for each resolved tax rate.</li>
+          </ol>
+          </section>
+          <section>
+          <h2>Canada Tax Type Resolver</h2>
+             <blockquote>
+              If selling from a store in Quebec to a customer in Ontario, apply the Ontario HST.</blockquote>
+            </section>
+          <section>
+          <h2>EU Tax Type Resolver</h2>
+            <blockquote>
+              A French store selling physical products (e.g. t-shirts) will charge French VAT to EU customers.
+            </blockquote>
+
+            <blockquote>
+              A French store selling digital products (e.g. ebooks) from Jan 1st 2015 will
+              apply the EU customer's tax rates (German customer - German VAT, etc)
+            </blockquote>
+
+            <blockquote>
+              A French store will charge the 0% Intra-Community rate if the EU customer has provided a VAT number.
+            </blockquote>
+          </section>
+          <section>
+              <h2>Default Tax Type Resolver</h2>
+              <blockquote>The Serbian store is selling to a Serbian customer, use Serbian VAT.</blockquote>
+          </section>
+          <section>
+              <h2>Default Tax Rate Resolver</h2>
+              <blockquote>Use the default rate ($rate->isDefault()) for the resolved tax type.</blockquote>
+          </section>
+          <section>
+            <h2>Or write your own!</h2>
+            <blockquote>No tax in New York for t-shirts under 200$</blockquote>
+            <blockquote>No tax for school supplies on september 1st (US tax holiday)</blockquote>
+            <blockquote>Reduced rate for ebooks in France.</blockquote>
+            </section>
         </section>
 
         <section>
@@ -346,7 +410,7 @@
               <li>ComplexPrice (base w/ taxes, discounts, fees)</li>
               <li>Calculators</li>
             </ul>
-              <br /><br /><p>Focus on the interaction between taxes and discounts</p>
+              <br /><br /><p>Focusing on the interaction between taxes and discounts</p>
             </ul>
           </section>
         </section>
